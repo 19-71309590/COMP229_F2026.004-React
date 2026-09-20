@@ -6,8 +6,20 @@
     background-color: #1e293b;
 }
 
-.logo{
-    color: white;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 .navbar ul{

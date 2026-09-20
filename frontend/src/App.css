@@ -92,6 +92,8 @@
   line-height: 1.5;
 }
 
+/*services*/
+
 .services {
   width: 85%;
   margin: 60px auto;
@@ -120,6 +122,8 @@
 .service-card p {
   line-height: 1.6;
 }
+
+/*references*/
 
 .references {
   width: 80%;
@@ -155,4 +159,70 @@
   border-left: 4px solid #2563eb;
   line-height: 1.6;
   font-style: italic;
+}
+
+/*contact*/
+
+.contact-page {
+  width: 80%;
+  margin: 60px auto;
+}
+
+.contact-page h1 {
+  text-align: center;
+}
+
+.contact-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.contact-info {
+  width: 35%;
+  padding: 25px;
+  background-color: #1e293b;
+  border-radius: 10px;
+}
+
+.contact-info h2 {
+  color: white;
+}
+
+.contact-info p {
+  margin: 15px 0;
+}
+
+.contact-form {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.contact-form label {
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #64748b;
+  border-radius: 5px;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.contact-form button {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
