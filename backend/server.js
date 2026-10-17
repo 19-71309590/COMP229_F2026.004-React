@@ -1,3 +1,5 @@
+const connectDatabase = require('./config/database');
+
 require('dotenv').config();
 
 const express = require('express');
@@ -35,6 +37,12 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+async function startServer() {
+  await connectDatabase();
+
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}
+
+startServer();
