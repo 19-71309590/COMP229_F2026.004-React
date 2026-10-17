@@ -1,6 +1,7 @@
 const connectDatabase = require('./config/database');
 const referenceRoutes = require('./routes/referenceRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
 
 require('dotenv').config();
 
@@ -26,10 +27,12 @@ app.get('/', (req, res) => {
   });
 });
 
-// Handles routes that do not exist
-app.use('/api/references', referenceRoutes);
+// API routes
 app.use('/api/references', referenceRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/services', serviceRoutes);
+
+// Handles routes that do not exist
 app.use((req, res, next) => {
   next(createError(404, 'Route not found.'));
 });
