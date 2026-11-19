@@ -11,6 +11,7 @@ export default function AdminReferences() {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const [editingId, setEditingId] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -41,7 +42,19 @@ export default function AdminReferences() {
     setForm(previous => ({ ...previous, [name]: value }))
   }
 
-  async function addReference(event) {
+  function startEditing({ id, name, position, company, testimonial }) {
+    setEditingId(id)
+    setForm({ name, position, company, testimonial })
+    setSaveError('')
+  }
+
+  function resetForm() {
+    setEditingId(null)
+    setForm(emptyForm)
+    setSaveError('')
+  }
+
+  async function saveReference(event) {
     event.preventDefault()
     const fields = Object.fromEntries(Object.entries(form).map(([key, value]) => [key, value.trim()]))
     if (Object.values(fields).some(value => !value)) {
@@ -52,20 +65,27 @@ export default function AdminReferences() {
     setSaving(true)
     setSaveError('')
     try {
-      const response = await fetch(referencesUrl, {
-        method: 'POST',
+      const url = editingId ? referencesUrl + '/' + encodeURIComponent(editingId) : referencesUrl
+      const response = await fetch(url, {
+        method: editingId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fields),
       })
       const result = await response.json()
-      if (!response.ok || !result.success || !result.data?.id) {
-        throw new Error('Could not add reference.')
+      if (!response.ok || !result.success || (!editingId && !result.data?.id)) {
+        throw new Error('Could not save reference.')
       }
 
-      setReferences(previous => [...previous, result.data])
-      setForm(emptyForm)
+      if (editingId) {
+        setReferences(previous => previous.map(reference =>
+          reference.id === editingId ? { ...reference, ...fields } : reference
+        ))
+      } else {
+        setReferences(previous => [...previous, result.data])
+      }
+      resetForm()
     } catch {
-      setSaveError('Could not add reference. Please try again.')
+      setSaveError('Could not save reference. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -74,8 +94,8 @@ export default function AdminReferences() {
   return (
     <section>
       <h2>Manage References</h2>
-      <h3>Add a Reference</h3>
-      <form onSubmit={addReference}>
+      <h3>{editingId ? 'Edit Reference' : 'Add a Reference'}</h3>
+      <form onSubmit={saveReference}>
         <fieldset disabled={loading || saving}>
           <label htmlFor="reference-name">Name</label>
           <input id="reference-name" name="name" value={form.name} onChange={handleChange} required />
@@ -85,7 +105,8 @@ export default function AdminReferences() {
           <input id="reference-company" name="company" value={form.company} onChange={handleChange} required />
           <label htmlFor="reference-testimonial">Testimonial</label>
           <textarea id="reference-testimonial" name="testimonial" value={form.testimonial} onChange={handleChange} required />
-          <button type="submit">{saving ? 'Saving...' : 'Add Reference'}</button>
+          <button type="submit">{saving ? 'Saving...' : editingId ? 'Save Changes' : 'Add Reference'}</button>
+          {editingId && <button type="button" onClick={resetForm}>Cancel</button>}
         </fieldset>
         {saveError && <p role="alert">{saveError}</p>}
       </form>
@@ -99,6 +120,7 @@ export default function AdminReferences() {
               <h3>{reference.name}</h3>
               <p>{reference.position} · {reference.company}</p>
               <blockquote>{reference.testimonial}</blockquote>
+              <button type="button" disabled={saving} onClick={() => startEditing(reference)}>Edit</button>
             </li>
           ))}
         </ul>
