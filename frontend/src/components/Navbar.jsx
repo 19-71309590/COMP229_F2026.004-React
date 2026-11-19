@@ -16,6 +16,7 @@ function Navbar() {
         <li><Link to="/services">Services</Link></li>
         <li><Link to="/references">References</Link></li>
         <li><Link to="/contact">Contact Me</Link></li>
+        <li><Link to="/admin">Admin Dashboard</Link></li>
       </ul>
     </nav>
   )
