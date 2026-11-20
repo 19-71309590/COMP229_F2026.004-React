@@ -2,6 +2,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import AdminReferences from './AdminReferences'
 import AdminProjects from './AdminProjects'
 import AdminServices from './AdminServices'
+import AdminUsers from './AdminUsers'
 
 const sections = ['Users', 'Projects', 'Services', 'References']
 
@@ -15,7 +16,7 @@ export default function AdminDashboard() {
         ))}
       </ul>
       <Routes>
-        <Route path="users" element={<h2>Manage Users</h2>} />
+        <Route path="users" element={<AdminUsers />} />
         <Route path="references" element={<AdminReferences />} />
         <Route path="projects" element={<AdminProjects />} />
         <Route path="services" element={<AdminServices />} />
