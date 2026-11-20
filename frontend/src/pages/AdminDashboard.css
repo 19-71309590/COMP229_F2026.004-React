@@ -2,6 +2,24 @@
   max-width: 36rem;
 }
 
+.admin-table {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.admin-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid #64748b;
+  padding: 0.65rem;
+  overflow-wrap: anywhere;
+}
+
 .admin-dashboard fieldset {
   min-width: 0;
 }
