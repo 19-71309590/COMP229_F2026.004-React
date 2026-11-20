@@ -12,7 +12,7 @@ export default function AdminDashboard() {
       <h1>Admin Dashboard</h1>
       <ul>
         {sections.map(section => (
-          <li key={section}><Link to={section.toLowerCase()}>{section}</Link></li>
+          <li key={section}><Link to={'/admin/' + section.toLowerCase()}>{section}</Link></li>
         ))}
       </ul>
       <Routes>
