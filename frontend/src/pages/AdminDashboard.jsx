@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from 'react-router-dom'
 import AdminReferences from './AdminReferences'
+import AdminProjects from './AdminProjects'
 
 const sections = ['Users', 'Projects', 'Services', 'References']
 
@@ -13,10 +14,11 @@ export default function AdminDashboard() {
         ))}
       </ul>
       <Routes>
-        {sections.filter(section => section !== 'References').map(section => (
+        {sections.filter(section => section !== 'References' && section !== 'Projects').map(section => (
           <Route key={section} path={section.toLowerCase()} element={<h2>Manage {section}</h2>} />
         ))}
         <Route path="references" element={<AdminReferences />} />
+        <Route path="projects" element={<AdminProjects />} />
       </Routes>
     </main>
   )
