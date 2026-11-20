@@ -12,6 +12,9 @@ export default function AdminReferences() {
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
   const [editingId, setEditingId] = useState(null)
+  const [deletingId, setDeletingId] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
+  const busy = saving || deletingId !== null
 
   useEffect(() => {
     const controller = new AbortController()
@@ -91,12 +94,33 @@ export default function AdminReferences() {
     }
   }
 
+  async function deleteReference(reference) {
+    if (busy || !window.confirm('Delete the reference for ' + reference.name + '?')) return
+
+    setDeletingId(reference.id)
+    setDeleteError('')
+    try {
+      const response = await fetch(referencesUrl + '/' + encodeURIComponent(reference.id), {
+        method: 'DELETE',
+      })
+      const result = await response.json()
+      if (!response.ok || !result.success) throw new Error('Could not delete reference.')
+
+      setReferences(previous => previous.filter(item => item.id !== reference.id))
+      if (editingId === reference.id) resetForm()
+    } catch {
+      setDeleteError('Could not delete the reference. Please try again.')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   return (
     <section>
       <h2>Manage References</h2>
       <h3>{editingId ? 'Edit Reference' : 'Add a Reference'}</h3>
       <form onSubmit={saveReference}>
-        <fieldset disabled={loading || saving}>
+        <fieldset disabled={loading || busy}>
           <label htmlFor="reference-name">Name</label>
           <input id="reference-name" name="name" value={form.name} onChange={handleChange} required />
           <label htmlFor="reference-position">Position</label>
@@ -112,6 +136,7 @@ export default function AdminReferences() {
       </form>
       {loading && <p role="status">Loading references...</p>}
       {error && <p role="alert">{error}</p>}
+      {deleteError && <p role="alert">{deleteError}</p>}
       {!loading && !error && references.length === 0 && <p>No references yet.</p>}
       {references.length > 0 && (
         <ul>
@@ -120,7 +145,10 @@ export default function AdminReferences() {
               <h3>{reference.name}</h3>
               <p>{reference.position} · {reference.company}</p>
               <blockquote>{reference.testimonial}</blockquote>
-              <button type="button" disabled={saving} onClick={() => startEditing(reference)}>Edit</button>
+              <button type="button" disabled={busy} onClick={() => startEditing(reference)}>Edit</button>
+              <button type="button" disabled={busy} onClick={() => deleteReference(reference)}>
+                {deletingId === reference.id ? 'Deleting...' : 'Delete'}
+              </button>
             </li>
           ))}
         </ul>
