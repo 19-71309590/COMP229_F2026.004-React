@@ -1,0 +1,30 @@
+.admin-dashboard form {
+  max-width: 36rem;
+}
+
+.admin-dashboard fieldset {
+  min-width: 0;
+}
+
+.admin-dashboard form label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.admin-dashboard form input,
+.admin-dashboard form textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.admin-dashboard form textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.admin-dashboard form button + button {
+  margin-left: 0.5rem;
+}

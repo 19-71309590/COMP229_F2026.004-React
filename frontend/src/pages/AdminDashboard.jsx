@@ -3,12 +3,13 @@ import AdminReferences from './AdminReferences'
 import AdminProjects from './AdminProjects'
 import AdminServices from './AdminServices'
 import AdminUsers from './AdminUsers'
+import './AdminDashboard.css'
 
 const sections = ['Users', 'Projects', 'Services', 'References']
 
 export default function AdminDashboard() {
   return (
-    <main>
+    <main className="admin-dashboard">
       <h1>Admin Dashboard</h1>
       <ul>
         {sections.map(section => (
